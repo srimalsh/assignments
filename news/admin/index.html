@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News BackEnd</title>
+
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script src="./js/ckeditor.js"></script>
+
+    <link href="./css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container-full">
+        <aside class="wrapper-menu">
+            <ul>
+                <li>asdsad</li>
+                <li>asdsad</li>
+                <li>asdsad</li>
+                <li>asdsad</li>
+            </ul>
+        </aside>
+
+        <div class="wrapper-content-area">
+            <div class="content-header" id="responseHolder">
+                <h3>This is form Title</h3>
+            </div>
+
+            <div class="content-header">
+                <input type="button" id="addbtn" class="btn-2" value="Add New +">
+            </div>
+
+            <div class="content-box">
+                <div class="form-wrapper-generic">
+
+                    <form action="#" id="testForm" method="post" enctype="multipart/form-data">
+                        <div class="form-wrapper-inner">
+                            <label for="myFile" class="custom-file-upload">
+                                Upload Header Image
+                            </label>
+                            <input id="myFile" name="myFile" type="file"/>
+                        </div><br>
+
+                        <label for="fname">First name:</label><br>
+                        <input type="text" id="fname" name="fname" value="John"><br>
+                        <label for="lname">Last name:</label><br>
+                        <input type="text" id="lname" name="lname" value="Doe"><br>
+                        <label for="editor">Editor:</label><br><br>
+                        <textarea name="content" id="editor">
+                            &lt;p&gt;This is some sample content.&lt;/p&gt;
+                        </textarea>
+                        <br>
+                        <input type="submit" value="Submit">
+                    </form>
+
+                    <!-- <div id="editor">
+                        <p>This is some sample content.</p>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- tables -->
+            <div class="content-box">
+                <div class="table-wrapper-generic">
+                    <table>
+                        <tr>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Country</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>Alfreds Futterkiste</td>
+                            <td>Maria Anders</td>
+                            <td>Germany</td>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="cool">Centro comercial Moctezuma</a></td>
+                            <td>Francisco Chang</td>
+                            <td>Mexico</td>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <td>Ernst Handel</td>
+                            <td>Roland Mendel</td>
+                            <td>Austria</td>
+                            <td><a href="#" class="warn">Delete</a></td>
+                        </tr>
+                        <tr>
+                            <td>Island Trading</td>
+                            <td>Helen Bennett</td>
+                            <td>UK</td>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <td>Laughing Bacchus Winecellars</td>
+                            <td>Yoshi Tannamuri</td>
+                            <td>Canada</td>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <td>Magazzini Alimentari Riuniti</td>
+                            <td>Giovanni Rovelli</td>
+                            <td>Italy</td>
+                            <td>Delete</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            //just post
+            $("#addbtn").click(function () {
+
+                $.post('../api/test.php', $('form#testForm').serialize(), function (data, status) {
+
+                    console.log(data, status);
+
+                }, 'json');
+            });
+
+            //file upload
+            $('#testForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({                    
+                    url: '../api/test.php',
+                    type: 'POST',                    
+                    data: new FormData($('form')[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    xhr: function () {
+                        var myXhr = $.ajaxSettings.xhr();
+                        if (myXhr.upload) {
+                            // For handling the progress of the upload
+                            myXhr.upload.addEventListener('progress', function (e) {
+                                if (e.lengthComputable) {
+                                    $('progress').attr({
+                                        value: e.loaded,
+                                        max: e.total,
+                                    });
+                                }
+                            }, false);
+                        }
+                        return myXhr;
+                    }
+                }).done(function(message){
+                    console.log("RESPONSE",message);
+                })
+                .fail(function(err){
+                    console.log("ERROR",err);
+                });
+            });
+
+        });
+
+        //CK Editor
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+
+        /*
+            $('input#submitButton').click( function() {
+    $.ajax({
+        url: 'some-url',
+        type: 'post',
+        dataType: 'json',
+        data: $('form#myForm').serialize(),
+        success: function(data) {
+                   // ... do something with the data...
+                 }
+    });
+});
+            */
+    </script>
+
+</body>
+
+</html>

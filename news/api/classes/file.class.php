@@ -1,5 +1,9 @@
 <?php
 
+/*
+Srimal Iresh
+Not copeid from somewhere :)
+*/
 class FileUpload{
 
     private $obj = null;
@@ -16,12 +20,29 @@ class FileUpload{
         return $this;
     }
 
-    function from(){
-        
+    function upload($file,$from,$dest,$allowedFileTypes){
+
+        if($file['error']!=0){
+            $this->obj->throwError(202,'File Error or corrupted');
+         }
+         
+        if(!isset($file['name']) || $file['name']!=''){
+            $this->obj->throwError(202,'File cannot be found');
+         }
+
+         if(!$this->isAllowedFileType($file['name'],$allowedFileTypes)){
+            $this->obj->throwError(202,'File Type is not supported');
+         }
     }
 
-    function upload($files){
-        
+    private function isAllowedFileType($type,$allowedFileTypes){
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if (!in_array($ext, $allowedFileTypes)) {
+            return false;
+        }
+
+        return true;
+
     }
 
 }

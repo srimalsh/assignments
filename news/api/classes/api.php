@@ -21,6 +21,9 @@ class API extends Authenticator{
     }
 
     function saveNews(){
+
+        $this->sendResponse(200,$_FILES);
+
         $news = new News($this);
         $result = $news->create_news($this->params,$_FILES);
 

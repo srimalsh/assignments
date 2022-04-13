@@ -2,18 +2,31 @@
 
 class API extends Authenticator{
 
-    #private $db = null;
-
     function __construct(){
         parent::__construct();
-        #$this->db = new Database();
+    }
+
+    function getNews(){
+        $news = new News($this);
+        $result = $news->get_news_single($this->params['id'])[0];
+
+        $this->sendResponse(200,$result);
     }
 
     function getAllNews(){
-        $news = new News();
+        $news = new News($this);
         $result = $news->get_news_all();
 
         $this->sendResponse(200,$result);
+    }
+
+    function saveNews(){
+        $news = new News($this);
+        $result = $news->create_news($this->params,$_FILES);
+
+        if($result){
+            $this->sendResponse(200,"Articles has been successfully saved");
+        }
     }
 
 }

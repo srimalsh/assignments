@@ -2,11 +2,11 @@
 
 class Authenticator{
 
-    protected $params = null;
+    public $params = null;
     protected $serviceName = null;
     private $request = null;
 
-    function __construct(){        
+    function __construct(){                
         $this->validateRequest($_SERVER['CONTENT_TYPE'],$_SERVER['REQUEST_METHOD']);
     }
 
@@ -14,10 +14,12 @@ class Authenticator{
         try {
             $api = new API();
             
-            $rMethod = new reflectionMethod('API', $this->serviceName);
+            #$rMethod = new reflectionMethod('API', $this->serviceName);
+            $rMethod = new reflectionMethod($api, $this->serviceName);
             if(!method_exists($api, $this->serviceName)) {
                 $this->throwError(501, "API does not exist for the requested service");
             }
+
             $rMethod->invoke($api);
 
         } catch (Exception $e) {
@@ -26,7 +28,7 @@ class Authenticator{
     }
 
     private function validateRequest($contentType='',$reqMethod=''){
-        $this->sendResponse(200,$_SERVER);
+        //$this->sendResponse(200,$_SERVER);
 
         /*if($_SERVER['CONTENT_TYPE']!='application/json'):
             $this->throwError(403,'Invalid Content Type,Only JSON is accepted');
@@ -36,9 +38,34 @@ class Authenticator{
         //$requestData = json_decode($content,true);
         */
 
-        if((strtolower($_SERVER['REQUEST_METHOD'])=='post') || strtolower($_SERVER['REQUEST_METHOD'])=='get'){            
+        
+            
+            if(strtolower($_SERVER['REQUEST_METHOD'])=='post'){
+                
+                if($_POST['service']==null || $_POST['service']=='' || !isset($_POST['service'])){
+                    $this->throwError(403,'Invalid API Service Request');
+                }
 
-            $requestData = $_REQUEST;            
+                $this->request = $_POST;
+
+                $this->params = $_POST;
+                $this->serviceName = $_POST['service'];
+
+            }else if(strtolower($_SERVER['REQUEST_METHOD'])=='get'){
+
+                $this->params = $_GET;
+                $this->serviceName = $_GET['service'];
+
+            }else{
+                $this->throwError(403,'Invalid Request Method');
+            }
+
+        
+        
+        /*if((strtolower($_SERVER['REQUEST_METHOD'])=='post') || strtolower($_SERVER['REQUEST_METHOD'])=='get'){            
+
+            $requestData = $_REQUEST;    
+            $requestData['data'] = $_POST;        
 
             if($requestData['service']==null || $requestData['service']=='' || !isset($requestData['service'])){
                 $this->throwError(403,'Invalid API Service Request');
@@ -55,12 +82,12 @@ class Authenticator{
             
         }else{
             $this->throwError(403,'Invalid Request Method');
-        }
+        }*/
         
     }
 
     private function extractRequest(){
-        $this->params = $this->request['data'];
+        $this->params = $this->request['data'];        
         $this->serviceName = $this->request['service'];
         //$this->sendResponse($this->request);
     }
@@ -68,7 +95,7 @@ class Authenticator{
     function sendResponse($statusCode,$return_array){
         header('Content-Type: application/json');
         http_response_code($statusCode);
-        echo json_encode(['result'=>$return_array]);
+        echo json_encode(['result'=>[$return_array]]);
         exit();
     }
     

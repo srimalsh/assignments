@@ -26,7 +26,7 @@
         </aside>
 
         <div class="wrapper-content-area">
-            <div class="content-header" id="responseHolder">
+            <div class="content-header">
                 <h3>This is form Title</h3>
             </div>
 
@@ -38,6 +38,7 @@
                 <div class="form-wrapper-generic">
 
                     <form action="#" id="testForm" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="service" value="saveNews">
                         <div class="form-wrapper-inner">
                             <label for="myFile" class="custom-file-upload">
                                 Upload Header Image
@@ -45,21 +46,20 @@
                             <input id="myFile" name="myFile" type="file"/>
                         </div><br>
 
-                        <label for="fname">First name:</label><br>
-                        <input type="text" id="fname" name="fname" value="John"><br>
-                        <label for="lname">Last name:</label><br>
-                        <input type="text" id="lname" name="lname" value="Doe"><br>
-                        <label for="editor">Editor:</label><br><br>
-                        <textarea name="content" id="editor">
+                        <label for="title">First name:</label><br>
+                        <input type="text" id="title" name="title" value="John"><br>
+                        <label for="subTitle">Last name:</label><br>
+                        <input type="text" id="subTitle" name="subTitle" value="Doe"><br>
+                        <label for="articleContent">Editor:</label><br><br>
+                        <textarea name="articleContent" id="editor">
                             &lt;p&gt;This is some sample content.&lt;/p&gt;
                         </textarea>
                         <br>
                         <input type="submit" value="Submit">
                     </form>
 
-                    <!-- <div id="editor">
-                        <p>This is some sample content.</p>
-                    </div> -->
+                    <div class="content-header" id="responseHolder">                        
+                    </div>
                 </div>
             </div>
 
@@ -117,77 +117,7 @@
 
     </div>
 
-    <script>
-        $(document).ready(function () {
-
-            //just post
-            $("#addbtn").click(function () {
-
-                $.post('../api/test.php', $('form#testForm').serialize(), function (data, status) {
-
-                    console.log(data, status);
-
-                }, 'json');
-            });
-
-            //file upload
-            $('#testForm').on('submit', function (e) {
-                e.preventDefault();
-
-                $.ajax({                    
-                    url: '../api/test.php',
-                    type: 'POST',                    
-                    data: new FormData($('form')[0]),
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-
-                    xhr: function () {
-                        var myXhr = $.ajaxSettings.xhr();
-                        if (myXhr.upload) {
-                            // For handling the progress of the upload
-                            myXhr.upload.addEventListener('progress', function (e) {
-                                if (e.lengthComputable) {
-                                    $('progress').attr({
-                                        value: e.loaded,
-                                        max: e.total,
-                                    });
-                                }
-                            }, false);
-                        }
-                        return myXhr;
-                    }
-                }).done(function(message){
-                    console.log("RESPONSE",message);
-                })
-                .fail(function(err){
-                    console.log("ERROR",err);
-                });
-            });
-
-        });
-
-        //CK Editor
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        /*
-            $('input#submitButton').click( function() {
-    $.ajax({
-        url: 'some-url',
-        type: 'post',
-        dataType: 'json',
-        data: $('form#myForm').serialize(),
-        success: function(data) {
-                   // ... do something with the data...
-                 }
-    });
-});
-            */
-    </script>
+    <script src="js/article.js"></script>   
 
 </body>
 

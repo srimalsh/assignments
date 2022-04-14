@@ -5,4 +5,6 @@ const DB_USER = 'root';
 const DB_PASSWD = '';
 const DB_DATABASE = 'clique_news';
 
+const FILE_UPLOAD_PATH = '';
+
 ?>

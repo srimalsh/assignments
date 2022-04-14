@@ -1,9 +1,13 @@
 <?php
 
+/*if(!defined('API_CONST')) {
+    die('Direct access not permitted');
+}*/
+
 class API extends Authenticator{
 
-    function __construct(){
-        parent::__construct();
+    function __construct($REQUEST=null){
+        parent::__construct($REQUEST);
     }
 
     function getNews(){
@@ -22,10 +26,10 @@ class API extends Authenticator{
 
     function saveNews(){
 
-        $this->sendResponse(200,$_FILES);
+        //$this->sendResponse(200,$_FILES);
 
         $news = new News($this);
-        $result = $news->create_news($this->params,$_FILES);
+        $result = $news->create_news($this->params,$_FILES['headImage']);
 
         if($result){
             $this->sendResponse(200,"Articles has been successfully saved");

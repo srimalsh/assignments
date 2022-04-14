@@ -4,11 +4,8 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 define('ALLOW_API','CLIQUE$#%');
 
-require_once('./conf/conf.php');
-require_once('./classes/authenticator.class.php');
-require_once('./classes/api.php');
-require_once('./classes/database.class.php');
-require_once('./classes/news.class.php');
+require_once('./includes.php');
+
 
 //getAllNews
 $api = new API();

@@ -6,8 +6,8 @@ class Authenticator{
     protected $serviceName = null;
     private $request = null;
 
-    function __construct(){                
-        $this->validateRequest($_SERVER['CONTENT_TYPE'],$_SERVER['REQUEST_METHOD']);
+    function __construct($REQUEST=null){
+        $this->validateRequest($REQUEST);
     }
 
     public function processAPI(){
@@ -27,7 +27,7 @@ class Authenticator{
         }   
     }
 
-    private function validateRequest($contentType='',$reqMethod=''){
+    private function validateRequest(){
         //$this->sendResponse(200,$_SERVER);
 
         /*if($_SERVER['CONTENT_TYPE']!='application/json'):
@@ -95,7 +95,7 @@ class Authenticator{
     function sendResponse($statusCode,$return_array){
         header('Content-Type: application/json');
         http_response_code($statusCode);
-        echo json_encode(['result'=>[$return_array]]);
+        echo json_encode(['result'=>$return_array]);
         exit();
     }
     

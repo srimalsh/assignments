@@ -12,10 +12,11 @@
         <form action="#" id="testForm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="service" value="saveNews">
             <div class="form-wrapper-inner">
-                <label for="myFile" class="custom-file-upload">
+                <label for="headImage" class="custom-file-upload">
                     Upload Header Image
                 </label>
-                <input id="myFile" name="myFile" type="file" />
+                <input id="headImage" name="headImage" type="file" />
+                <span id="fileInfo"></span>
             </div><br>
 
             <label for="title">First name:</label><br>

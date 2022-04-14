@@ -27,7 +27,7 @@ $(document).ready(function () {
                     return myXhr;
                 }
             }).done(function (message) {
-                console.log("RESPONSE", message);
+                //console.log("RESPONSE", message);
                 if (message.result.error) {
                     $("#responseHolder").html(message.result.error.message);
                 } else {
@@ -35,9 +35,22 @@ $(document).ready(function () {
                 }
             })
             .fail(function (err) {
-                console.log("ERROR", err);
+                //console.log("ERROR", err);
                 $("#responseHolder").html(JSON.stringify(err.responseText));
             });
+    });
+
+    //asas
+    $('#headImage').on('change', function () {
+        var file = this.files[0];
+        $('#fileInfo').html("File : "+file.name+" | Size : "+(file.size/1024)+" KB");
+        //console.log(file);
+
+        /*if (file.size > 1024) {
+            alert('max upload size is 1k');
+        }*/
+
+        // Also see .name, .type
     });
 
 });

@@ -8,16 +8,23 @@ class News extends Database{
 
     function __construct($obj){
         parent::__construct();
-        $this->obj = $obj;        
+        $this->obj = $obj;
     }
 
     function create_news($data,$file){
-        
-        $fileUploadObj = new FileUpload($this->obj);
-
         $message = "";
         $isValid = true;
-        $headerImage = "";
+
+        if(is_array($file)){
+
+            if(($file['error']==0) && ($file['name']!='') && (!isset($file['name']) )){
+                
+            }
+            
+            //print_r($file);
+        }
+
+        $this->obj->throwError(202,$file);
 
         if(!isset($data['title']) || $data['title']==''){
             $isValid = false;
@@ -34,28 +41,18 @@ class News extends Database{
             $message .= "Artical content is required</br>";
         }       
 
-        if(is_array($file)){            
-            $newFileName = $fileUploadObj->generateFileName($file['name']);
-            $newFilePath = FILE_UPLOAD_PATH."uploads/".$newFileName;
-            $headerImage = $fileUploadObj->upload($file,$newFileName,$file['tmp_name'],$newFilePath,array('png','jpg','jpeg'));
-        }else{
-            $isValid = false;
-            $message .= "Header image is required</br>";
-        }
-
         if($isValid){
 
             $SQL = "INSERT INTO articles SET ";
             $SQL .= " title = '".$this->clean($data['title'])."' , ";
             $SQL .= " subTitle = '".$this->clean($data['subTitle'])."' , ";
-            $SQL .= " headerImage = '".$headerImage."' , ";
             //$SQL .= " htmlName = '".$this->clean($data['htmlName'])."' , ";
             //$SQL .= " category = '".$this->clean($data['category'])."' , ";
             $SQL .= " articleContent = '".$this->clean($data['articleContent'])."' , ";
             $SQL .= " publishedDate = '".date("Y-m-d H:i:s")."' , ";
             $SQL .= " editedBy = '1' ";
 
-            //$this->obj->throwError(202,$SQL);
+            #$this->obj->throwError(202,$SQL);
 
             $res = $this->save($SQL);
             if(!$res){
@@ -72,9 +69,9 @@ class News extends Database{
     function edit_news(){}
 
     function get_news_all($searchQ=''){        
-        $SQL = "SELECT articleID,title,subTitle,headerImage,htmlName,category,articleContent,publishedDate,editedBy ";
+        $SQL = "SELECT articleID,title,subTitle,htmlName,category,articleContent,publishedDate,editedBy ";
         $SQL .= " FROM articles ";
-
+        
         return $this->result($SQL);
 
         /*$result = $this->result_raw($SQL); 
@@ -95,7 +92,7 @@ class News extends Database{
     }
 
     function get_news_single($id){
-        $SQL = "SELECT title,subTitle,headerImage,htmlName,category,articleContent,publishedDate,editedBy ";
+        $SQL = "SELECT title,subTitle,htmlName,category,articleContent,publishedDate,editedBy ";
         $SQL .= " FROM articles WHERE articleID='".$this->clean($id)."'";
         
         return $this->result($SQL);

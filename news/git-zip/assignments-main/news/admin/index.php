@@ -1,17 +1,3 @@
-<?php
-// echo '<pre>';
-//     print_r($_SERVER);
-// echo '</pre>';
-//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-define('ALLOW_API','CLIQUE$#%');
-require_once('../api/includes.php');
-
-$api = new API();
-$api->processAPI(['service'=>'getAllNews'],'array');
-$news = $api->data();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 

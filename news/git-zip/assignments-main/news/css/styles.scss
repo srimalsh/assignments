@@ -1,0 +1,63 @@
+/*
+Author : Srimal Iresh
+Purpose : Clique College - Assignment
+Start Date : 06 April 2022
+*/
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+$base-spacing:1em;
+
+//reformat default behaviors
+html , body{
+    margin: 0;
+    padding: 0;
+}
+body {
+  font: 14px $font-stack;
+  color: $primary-color;  
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+//navigation bar
+nav.head-nav{
+    background-color: black;
+    padding: $base-spacing;
+}
+//head banner
+.head-banner-wrapper{
+    width: 100vw;
+    min-height: 35vh;
+    background-color: #333;
+}
+
+/* START BODY STYLES */
+.container{
+    width: 80vw;
+    min-height: 50vh;
+    background-color: antiquewhite;
+    margin: 0 auto;
+}
+/* END BODY STYLES */
+
+//footer
+footer.footer{
+    background-color: black;
+    color: white;    
+    box-sizing: border-box;
+    width: 100vw;    
+
+
+    padding: $base-spacing*2;
+    margin: 0;
+
+    .box ul{
+        list-style: none;
+        li{
+            padding: $base-spacing/2;
+        }        
+    }
+
+}

@@ -40,19 +40,6 @@ $(document).ready(function () {
             });
     });
 
-    //asas
-    $('#headImage').on('change', function () {
-        var file = this.files[0];
-        $('#fileInfo').html("File : "+file.name+" | Size : "+(file.size/1024)+" KB");
-        //console.log(file);
-
-        /*if (file.size > 1024) {
-            alert('max upload size is 1k');
-        }*/
-
-        // Also see .name, .type
-    });
-
 });
 
 //CK Editor

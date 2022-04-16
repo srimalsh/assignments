@@ -1,4 +1,6 @@
 
+<?php if(!$isEditMode): ?>
+
 <div class="table-wrapper-generic">
     <table>
         <tr>
@@ -10,14 +12,16 @@
 
         <?php 
 
-            if($tableData):
+            if(is_array($dataArray)):
 
-                foreach($tableData as $k=>$row):
+                foreach($dataArray as $k=>$row):
+
+                    //print_r($row);
 
         ?>
      
         <tr>
-            <td><a href="#" class="cool"><?=$row['title'];?></a></td>
+            <td><a href="articles.php?action=edit&id=<?=$row['articleID'];?>" class="cool"><?=$row['title'];?></a></td>
             <td><?=$row['subTitle'];?></td>
             <td><?=$row['category'];?></td>
             <td><a href="#" class="warn">Delete</a></td>
@@ -37,3 +41,5 @@
         ?>
     </table>
 </div>
+
+<?php endif; ?>

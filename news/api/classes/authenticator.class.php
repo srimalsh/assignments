@@ -11,7 +11,7 @@ class Authenticator{
         $this->validateRequest();
     }
 
-    public function processAPI($getRequestArray=null,$returnType='json'){
+    public function processAPI(){
         
         try {
             $api = new API();
@@ -21,10 +21,6 @@ class Authenticator{
             if(!method_exists($api, $this->serviceName)) {
                 $this->throwError(501, "API does not exist for the requested service");
             }
-
-            if($returnType=='array'){
-                $this->resultData = $rMethod->invoke($api);
-            }
             
             //$rMethod->invoke($api,$getRequestArray);
             $rMethod->invoke($api);
@@ -33,6 +29,30 @@ class Authenticator{
             $this->throwError(501, $e->getMessage() + "API does not exist.");
         }
 
+    }
+
+    public function processAPI_GET($methodName,$dataArray,$returnType='array'){
+        try {
+            $api = new API();
+            
+            $rMethod = new reflectionMethod('API', $methodName);
+            //$rMethod = new reflectionMethod('$api', $this->serviceName);
+            if(!method_exists($api,$methodName)) {
+                $this->throwError(501, "API does not exist for the requested service");
+            }
+            
+            if($returnType=='array'){
+                return $rMethod->invoke($api,$dataArray);
+            }else if($returnType=='obj'){
+                 return $this->objResult($rMethod->invoke($api,$dataArray));
+            }else{
+                return $this->jsonResult($rMethod->invoke($api,$dataArray));
+            }
+            
+
+        } catch (Exception $e) {
+            $this->throwError(501, $e->getMessage() + "API does not exist.");
+        }
     }
 
     private function validateRequest($contentType='',$reqMethod=''){
@@ -56,8 +76,8 @@ class Authenticator{
 
         }else if(strtolower($_SERVER['REQUEST_METHOD'])=='get'){
 
-            $this->params = $_GET;
-            $this->serviceName = $_GET['service'];
+            // $this->params = $_GET;
+            // $this->serviceName = $_GET['service'];
 
         }else{
             $this->throwError(403,'Invalid Request Method');
@@ -70,11 +90,27 @@ class Authenticator{
         echo json_encode(['result'=>$return_array]);
         exit();
     }
+
+    function throwError($code,$message){
+        $error = ['error'=>['status'=>$code,'message'=>$message]];
+        $this->sendResponse($code,$error);         
+    }
+
+    private function jsonResult($return_array){
+        //header('Content-Type: application/json');
+        //http_response_code($statusCode);
+        return json_encode($return_array);
+        
+    }
+
+    private function objResult($return_array){
+        //header('Content-Type: application/json');
+        //http_response_code($statusCode);
+        return json_decode(json_encode($return_array),false);
+        
+    }
     
-     function throwError($code,$message){
-         $error = ['error'=>['status'=>$code,'message'=>$message]];
-         $this->sendResponse($code,$error);         
-     }
+    
 }
 
 ?>

@@ -10,14 +10,18 @@ class API extends Authenticator{
         parent::__construct();
     }
 
-    function getNews(){
+    function getNews($data){
         $news = new News($this);
-        $result = $news->get_news_single($this->params['id'])[0];
+        $result = $news->get_news_single($data['id'])[0];
 
-        $this->sendResponse(200,$result);
+        return $result;
+
+        //$this->sendResponse(200,$result);
     }
 
-    function getAllNews(){
+    function getAllNews($data){
+
+        //$this->sendResponse(200,$data);
 
         $news = new News($this);
         $result = $news->get_news_all();
@@ -29,7 +33,9 @@ class API extends Authenticator{
         
         $news = new News($this);
         
-        $result = $news->create_news($this->params,$_FILES['headImage']);
+        //$result = $news->create_news($this->params,$_FILES['headImage']);
+
+        $result = $news->save_news($this->params,$_FILES['headImage']);
 
         if($result){
             $this->sendResponse(200,"Articles has been successfully saved");

@@ -5,28 +5,23 @@ define('ALLOW_API','CLIQUE$#%');
 require_once('../api/includes.php');
 
 $api = new API();
-$tableData = $api->processAPI_GET('getAllNews',['a','b'],'array');
+$isEditMode = false;
 
-echo '<pre>';
-    print_r($news);
-echo '</pre>';
+if(isset($_GET['action']) && $_GET['action']=='edit' ){
+    $dataArray = $api->processAPI_GET('getNews',['id'=>$_GET['id']],'array');
+    $isEditMode = true;
+}else{
+    $dataArray = $api->processAPI_GET('getAllNews',[],'array');
+}
+
+//$dataArray = $api->processAPI_GET('getAllNews',[],'obj');
+// echo '<pre>';
+//     print_r($dataArray);
+// echo '</pre>';
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News BackEnd | PHP</title>
-
-    <script src="./js/jquery-3.6.0.js"></script>
-    <script src="./js/ckeditor.js"></script>
-
-    <link href="./css/styles.css" rel="stylesheet" />
-</head>
+<?php include_once('./templates/admin.topheader.php'); ?>
 
 <body>
 
@@ -37,7 +32,9 @@ echo '</pre>';
         <div class="wrapper-content-area">
             <!-- form -->
             <div>
+
                 <?php include_once('./templates/articles.form.php'); ?>
+
             </div>
 
             <!-- tables -->
@@ -51,6 +48,4 @@ echo '</pre>';
 
     <script src="js/article.js"></script>
 
-</body>
-
-</html>
+    <?php include_once('./templates/admin.footer.php'); ?>

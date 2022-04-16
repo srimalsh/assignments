@@ -23,7 +23,7 @@ class FileUpload{
     function upload($file,$filename,$from,$dest,$allowedFileTypes){
          
         if(!isset($file['name']) || $file['name']==''){
-            $this->obj->throwError(202,'File cannot be found');
+            $this->obj->throwError(202,'File attachement cannot be found');
         }
 
          if(!$this->isAllowedFileType($file['name'],$allowedFileTypes)){

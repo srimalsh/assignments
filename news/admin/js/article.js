@@ -40,7 +40,20 @@ $(document).ready(function () {
             });
     });
 
-    //asas
+    $(".deleteRaw").on('click',function(){
+
+        //alert($(this).attr('rowid'));
+
+        var del = confirm("Are you sure to delete the record?");
+        if(del){
+            //alert('deleted');
+            $.post( "../api/index-admin.php", { service: "deleteNews", id: $(this).attr('rowid') }, function( data ){
+                location.reload();
+            });
+        }
+    });
+
+    //file info 
     $('#headImage').on('change', function () {
         var file = this.files[0];
         $('#fileInfo').html("File : "+file.name+" | Size : "+(file.size/1024)+" KB");

@@ -1,8 +1,8 @@
 <?php
 
-/*if(!defined('API_CONST')) {
+if(!defined('ALLOW_API') || ALLOW_API!='CLIQUE$#%') {
     die('Direct access not permitted');
-}*/
+}
 
 class API extends Authenticator{
 
@@ -20,11 +20,22 @@ class API extends Authenticator{
     }
 
     function getAllNews($data){
-
-        //$this->sendResponse(200,$data);
-
         $news = new News($this);
         $result = $news->get_news_all();
+        
+        return $result;
+    }
+
+    function searchNews($data){
+
+        $news = new News($this);
+
+        if((isset($data['searchFrom']) && $data['searchFrom']!='' ) &&  (isset($data['searchTo']) && $data['searchTo']!='' )):
+            
+            $result = $news->get_news_all(['range'=>['start'=>$data['searchFrom'],'end'=>$data['searchTo']]]);
+        else:
+            $result = $news->get_news_all();
+        endif;        
         
         return $result;
     }
@@ -39,6 +50,15 @@ class API extends Authenticator{
 
         if($result){
             $this->sendResponse(200,"Articles has been successfully saved");
+        }
+    }
+
+    function deleteNews(){        
+        $news = new News($this);
+        $result = $news->delete_news($this->params);
+
+        if($result){
+            $this->sendResponse(200,"Articles has been successfully deleted");
         }
     }
 

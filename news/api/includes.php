@@ -5,4 +5,5 @@ require_once('classes/api.php');
 require_once('classes/database.class.php');
 require_once('classes/file.class.php');
 require_once('classes/news.class.php');
+require_once('classes/login.class.php');
 ?>

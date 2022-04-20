@@ -1,10 +1,14 @@
 <?php
 
+if(!defined('ALLOW_API') || ALLOW_API!='CLIQUE$#%') {
+    die('Direct access not permitted');
+}
+
 class Authenticator{
 
     public $params = null;
     public $returnType = 'json';
-    public $serviceName = null;    
+    public $serviceName = null;
     private $request = null;
     private $resultData;
 

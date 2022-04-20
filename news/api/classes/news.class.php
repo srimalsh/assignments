@@ -1,5 +1,9 @@
 <?php
 
+if(!defined('ALLOW_API') || ALLOW_API!='CLIQUE$#%') {
+    die('Direct access not permitted');
+}
+
 class News extends Database{
 
     private $obj = null;
@@ -8,7 +12,7 @@ class News extends Database{
 
     function __construct($obj){
         parent::__construct();
-        $this->obj = $obj;        
+        $this->obj = $obj;
     }
 
     function save_news($data,$file=null){
@@ -89,6 +93,17 @@ class News extends Database{
         return $res;        
     }
 
+    function delete_news($data){
+        $SQL = "DELETE FROM articles WHERE articleID='".$this->clean($data['id'])."' ";
+        $res = $this->save($SQL);
+
+        if(!$res){
+            $this->obj->throwError(202,'Unable to delete article');
+        }
+
+        return $res;
+    }
+
 
     function create_news($data,$file=null){
         
@@ -150,9 +165,20 @@ class News extends Database{
 
     function edit_news(){}
 
-    function get_news_all($searchQ=''){        
+    function get_news_all($searchQ=null){
+        $searchSQL = "";
+        if(is_array($searchQ)){            
+            if($searchQ['range']){
+                $searchSQL = " WHERE (publishedDate BETWEEN '".$this->clean($searchQ['range']['start'])."' AND '".$this->clean($searchQ['range']['end'])."')";                
+            }
+        }
+        // $SQL = "SELECT articleID,title,subTitle,headerImage,htmlName,category,articleContent,publishedDate,editedBy ";
+        // $SQL .= " FROM articles ";
+
+        //$searchQ = " WHERE (publishedDate BETWEEN '2022-04-1' AND '2022-04-5')";
+
         $SQL = "SELECT articleID,title,subTitle,headerImage,htmlName,category,articleContent,publishedDate,editedBy ";
-        $SQL .= " FROM articles ";
+        $SQL .= " FROM articles ".$searchSQL;
 
         return $this->result($SQL);
 

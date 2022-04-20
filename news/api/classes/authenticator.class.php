@@ -1,5 +1,9 @@
 <?php
 
+if(!defined('ALLOW_API') || ALLOW_API!='CLIQUE$#%') {
+    die('Direct access not permitted');
+}
+
 class Authenticator{
 
     public $params = null;
@@ -7,7 +11,7 @@ class Authenticator{
     private $request = null;
 
     function __construct(){                
-        //$this->validateRequest($_SERVER['CONTENT_TYPE'],$_SERVER['REQUEST_METHOD']);
+        //$this->validateRequest($_SERVER['CONTENT_TYPE'],$_SERVER['REQUEST_METHOD']);        
         $this->validateRequest();
     }
 
@@ -55,7 +59,12 @@ class Authenticator{
         }
     }
 
-    private function validateRequest($contentType='',$reqMethod=''){
+    private function validateRequest($contentType='',$reqMethod=''){            
+
+            if(!isset($_SESSION['logged'])){
+                //header('location:login.php');
+                //exit();
+            }
             
             if(strtolower($_SERVER['REQUEST_METHOD'])=='post'){
                 

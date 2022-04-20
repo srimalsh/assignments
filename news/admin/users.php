@@ -9,7 +9,6 @@ $isEditMode = false;
 $isAddMode = false;
 $isListMode = false;
 
-//if(isset($_GET['action']) && $_GET['action']=='edit' ){
 if(isset($_GET['action']) && $_GET['action']!=''){
 
     switch($_GET['action']){
@@ -31,7 +30,6 @@ if(isset($_GET['action']) && $_GET['action']!=''){
             $isListMode = true;
         break;
     }
-
     
 }else{
     $isListMode = true;
@@ -55,13 +53,13 @@ if(isset($_GET['action']) && $_GET['action']!=''){
 
         <div class="wrapper-content-area">
             <div class="content-header-highlight">
-                <h3><a href="articles.php">Manage Articles</a></h3>
+                <h3><a href="users.php">Manage Users</a></h3>
             </div>
 
             <!-- form -->
             <?php if($isEditMode || $isAddMode): ?>
             <div>
-                <?php include_once('./templates/articles.form.php'); ?>
+                <?php include_once('./templates/users.form.php'); ?>
             </div>
             <?php endif; ?>
 

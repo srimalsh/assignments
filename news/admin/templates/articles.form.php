@@ -1,9 +1,14 @@
-<div class="content-header">
-    <h3>This is form Title</h3>
-</div>
+<!-- <div class="content-header">
+    <input type="button" id="addbtn" class="btn-2" value="Add New +">
+    <h3>Manage Articles</h3>
+</div> -->
 
 <div class="content-header">
-    <input type="button" id="addbtn" class="btn-2" value="Add New +">
+    <?php if($isEditMode): ?>
+        <h3><?=$dataArray['title'];?></h3>
+    <?php else: ?>
+        <h3>Add New Article</h3>
+    <?php endif; ?>
 </div>
 
 <div class="content-box">
@@ -21,9 +26,9 @@
                 <span id="fileInfo"></span>
             </div><br>
 
-            <label for="title">First name:</label><br>
+            <label for="title">Title:</label><br>
             <input type="text" id="title" name="title" value="<?= isset($dataArray['title']) ? $dataArray['title'] : '';?>"><br>
-            <label for="subTitle">Last name:</label><br>
+            <label for="subTitle">Sub Title:</label><br>
             <input type="text" id="subTitle" name="subTitle" value="<?= isset($dataArray['subTitle']) ? $dataArray['subTitle'] : '';?>"><br>
             <label for="articleContent">Editor:</label><br><br>
             <textarea name="articleContent" id="editor">
@@ -31,7 +36,8 @@
                     <?= isset($dataArray['articleContent']) ? htmlspecialchars($dataArray['articleContent']) : ''; ?>
             </textarea>
             <br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Save Article">
+            <a href="articles.php" class="btn-2">Go Back</a>
         </form>
 
         <div class="content-header" id="responseHolder">

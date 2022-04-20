@@ -1,5 +1,9 @@
 <?php
 
+if(!defined('ALLOW_API') || ALLOW_API!='CLIQUE$#%') {
+    die('Direct access not permitted');
+}
+
 class Database{
     private $connection = null;
 
